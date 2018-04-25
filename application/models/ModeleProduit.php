@@ -12,13 +12,14 @@ class ModeleProduit extends CI_Model
     {
         if ($pNoProduit === FALSE)
         {
-            $requête = $this->db->get('ecommerce');
+            $requête = $this->db->get('produit');
             return $requête->result_array(); //retour d'un tableau associatif
         }
         //on va chercher l'article dont l'id est $pNoProduit
-        $requête = $this->db->get_where('ecommerce', array('noproduit' => $pNoArticle));
+        $requête = $this->db->get_where('produit', array('noproduit' => $pNoProduit));
         return $requête->row_array();
-    }
+
+    }// RetournerProduits
 
     Public Function insererUnArticle($DonneesAInserer)
     {

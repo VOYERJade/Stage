@@ -42,6 +42,7 @@ class Administrateur extends CI_Controller {
           'Detail' =>$this->input->post('txtTexte'),
           'Nomimage' => $this->input->post('txtNomFichierImage')
         );
+        //var_dump($DonneesAInserer);
         $this->ModeleProduit->insererUnArticle($DonneesAInserer); //appel du modele
         $this->load->helper('url'); // helper chargé pour l'utilisation de site_url (dans la vue)
         $this->load->view('Administrateur/insertionReussie');
@@ -55,4 +56,6 @@ class Administrateur extends CI_Controller {
         $this->load->view('templates/PiedDePage');
       }
   } // ajouterUnArticle
+
+  
 } //Class
