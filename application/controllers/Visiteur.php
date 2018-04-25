@@ -12,12 +12,30 @@ class Visiteur extends CI_Controller
      $this->load->model('ModeleUtilisateur');
   } // __construct
 
-  //Public function ListerLesProduits()
-  //{
-   // $this->load->model('ModeleProduit');
-   // $Donnees['LesProduits'] = $this->modeleProduit->getLesProduits();
+  Public function listerLesProduits()
+  {
+    $DonneesInjectees['LesProduits'] = $this->ModeleProduit->retournerProduits();
+    $DonneesInjectees['TitreDeLaPage'] = 'Tous les produits';
 
-    //pour afficher les produits il faut creer une view
-    //$this->load->view('afficherProduits', $Donnees);
-  //}
+    $this->load->view('templates/Entete');
+    $this->load->view('visiteur/listerLesProduits', $DonneesInjectees);
+    $this->load->view('templates/PiedDePage');
+  }//listerLesProduits
+
+  Public function voirUnProduit($pNoProduit = NULL)
+  {
+    $DonneesInjectees['UnProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
+
+    if (empty($DonneesInjectees['UnProduit']))
+    {
+      show_404();
+    }
+
+    $DonnesInjectees['TitreDeLaPage'] = $DonneesInjectees['unProduit']['cTitre'];
+
+    $this->load->view('templates/Entete');
+    $this->load->view('visiteur/listerLesProduits', $DonneesInjectees);
+    $this->load->view('templates/PiedDePage');
+
+  }//Voir un produit
 }
