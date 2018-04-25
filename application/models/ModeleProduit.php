@@ -16,7 +16,7 @@ class ModeleProduit extends CI_Model
             return $requête->result_array(); //retour d'un tableau associatif
         }
         //on va chercher l'article dont l'id est $pNoProduit
-        $requête = $this->db->get_where('produit', array('noproduit' => $pNoProduit));
+        $requête = $this->db->get_where('produit', array('NOPRODUIT' => $pNoProduit));
         return $requête->row_array();
 
     }// RetournerProduits

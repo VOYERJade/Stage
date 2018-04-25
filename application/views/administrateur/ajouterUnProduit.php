@@ -29,7 +29,7 @@ echo form_input('txtDateAjout','',array('pattern'=>'[0-9/-]*', 'title'=>'Un nom 
 
 //LA COLONNE NE PEUT ETRE NULL 
 echo form_label("Texte de l'article :", 'lblTexte');
-echo form_textarea('txtText', '', array('required'=>'required')).'<BR>';
+echo form_textarea('txtTexte', '', array('required'=>'required')).'<BR>';
 
 echo form_label("Nom du fichier Image :", 'lblNomFichierImage');
 echo form_input('txtNomFichierImage', '', array('pattern'=>'^[a-zA-Z][a-zA-Z0-9.]*', 'title'=>'Un nom de fichier doit commencer par une lettre', 'required'=>'required')).'<BR>';

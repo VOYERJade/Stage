@@ -14,7 +14,7 @@ class Visiteur extends CI_Controller
 
   Public function listerLesProduits()
   {
-    $DonneesInjectees['LesProduits'] = $this->ModeleProduit->retournerProduits();
+    $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduits();
     $DonneesInjectees['TitreDeLaPage'] = 'Tous les produits';
 
     $this->load->view('templates/Entete');
@@ -25,12 +25,11 @@ class Visiteur extends CI_Controller
   Public function voirUnProduit($pNoProduit = NULL)
   {
     $DonneesInjectees['UnProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
-
+    
     if (empty($DonneesInjectees['UnProduit']))
     {
       show_404();
     }
-
     $DonnesInjectees['TitreDeLaPage'] = $DonneesInjectees['unProduit']['cTitre'];
 
     $this->load->view('templates/Entete');
@@ -38,4 +37,5 @@ class Visiteur extends CI_Controller
     $this->load->view('templates/PiedDePage');
 
   }//Voir un produit
+
 }
