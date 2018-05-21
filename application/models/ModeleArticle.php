@@ -29,16 +29,16 @@ $this->load->database();
       } // nombreDArticles
 
       public function retournerArticlesLimite($nombreDeLignesARetourner, $noPremiereLigneARetourner)
- {// Nota Bene : surcharge non supportée par PHP
- $this->db->limit($nombreDeLignesARetourner, $noPremiereLigneARetourner);
- $requete = $this->db->get("tabarticle");
+      {// Nota Bene : surcharge non supportée par PHP
+        $this->db->limit($nombreDeLignesARetourner, $noPremiereLigneARetourner);
+        $requete = $this->db->get("tabarticle");
 
- if ($requete->num_rows() > 0) { // si nombre de lignes > 0
- foreach ($requete->result() as $ligne) {
- $jeuDEnregsitrements[] = $ligne;
- }
- return $jeuDEnregsitrements;
- } // fin if
- return false;
- } // retournerArticlesLimite
+        if ($requete->num_rows() > 0) { // si nombre de lignes > 0
+        foreach ($requete->result() as $ligne) {
+        $jeuDEnregsitrements[] = $ligne;
+      }
+        return $jeuDEnregsitrements;
+      } // fin if
+        return false;
+      } // retournerArticlesLimite
 } // Fin Classe

@@ -25,17 +25,98 @@ class Visiteur extends CI_Controller
   Public function voirUnProduit($pNoProduit = NULL)
   {
     $DonneesInjectees['UnProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
-    
-    if (empty($DonneesInjectees['UnProduit']))
-    {
-      show_404();
-    }
-    $DonnesInjectees['TitreDeLaPage'] = $DonneesInjectees['unProduit']['cTitre'];
 
+    if (empty($DonneesInjectees['UnProduit']))
+      {
+        show_404();
+      }
+    
+    var_dump($DonneesInjectees);
+    $DonneesInjectees['TitreDeLaPage'] = $DonneesInjectees['UnProduit']['LIBELLE'];
+    var_dump($DonneesInjectees);
     $this->load->view('templates/Entete');
-    $this->load->view('visiteur/listerLesProduits', $DonneesInjectees);
+    $this->load->view('visiteur/voirUnProduit', $DonneesInjectees);
     $this->load->view('templates/PiedDePage');
 
   }//Voir un produit
 
+  Public function insertionClient()
+  {
+    $this->load->helper('form');
+     
+    $DonneesInjectees['TitreDeLaPage'] = 'Inscription';
+    if ($this->input->post('boutonAjouter')) //on test si le formulaire a été posté
+      {
+        $DonneesAInserer = array(
+          'Nom' =>$this->input->post('txtNom'),
+          'Prenom' =>$this->input->post('txtPrenom'),
+          'Adresse' =>$this->input->post('txtAdresse'),
+          'Ville' =>$this->input->post('txtVille'),
+          'CodePostal' =>$this->input->post('txtCodePostal'),
+          'Identifiant' =>$this->input->post('txtIdentifiant'),
+          'MotDePasse' =>$this->input->post('txtMDP')
+        );
+        $this->ModeleUtilisateur->insererUnClient($DonneesAInserer); //appel du modele
+        $this->load->helper('url'); // helper chargé pour l'utilisation de site_url (dans la vue)
+        $this->load->view('Administrateur/insertionReussie');
+      }
+      else 
+      {
+          // Si le formulaire non posté = bouton 'submit' à NULL : on est jamais passé dans le formulaire 
+        // -> on envoie le formulaire !!!
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/Frm_Inscription', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+      }
+
+    }
+
+    Public function seConnecter()
+    {
+      $this->load->helper('form');
+      $this->load->library('form_validation');
+
+      $DonneesInjectees['TitreDeLaPage'] = 'Se Connecter';
+
+      $this->form_validation->set_rules('txtEmail', 'Email', 'required');
+      $this->form_validation->set_rules('txtMotDePasse', 'Mot de passe', 'required');
+
+      if ($this->form_validation->run() === FALSE)
+      {
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/seConnecter', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+      }
+      else 
+      {
+        $Utilisateur = array(
+          'Nom' => $this->input->post('txtEmail'),
+          'MotDePasse' => $this->input->post('txtMotDePasse'),
+        );
+
+        $UtilisateurRetourne = $this->ModeleUtilisateur->retournerUtilisateur($Utilisateur);
+        if (!($UtilisateurRetourne == null))
+        {
+          $this->load->library('session');
+          $this->session->identifiant = $UtilisateurRetourne->cIdentifiant;
+          $this->session->statut = $UtilisateurRetourne->cStatut;
+
+          $DonneesInjectees['Email'] = $Utilisateur['Nom'];
+          $this->load->view('templates/Entete');
+          $this->load->view('visiteur/connexionReussie', $DonneesInjectees);
+          $this->load->view('templates/PiedDePage');
+        }
+        else 
+        {
+          $this->load->view('templates/Entete');
+          $this->load->view('visiteur/seConnecter', $DonneesInjectees);
+          $this->load->view('templates/PiedDePage');
+        }
+      }
+    } // fin seConnecter
+
+    Public function seDeConnecter()
+    {
+      $this->session->sess_destroy();
+    } // fin seDeConnecter
 }

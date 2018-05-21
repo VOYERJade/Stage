@@ -8,7 +8,7 @@ class ModeleProduit extends CI_Model
         /*chargement database.php (dans config), obligatoirement dans le constructeur*/
     }
 
-    public function retournerProduits($pNoProduit = FALSE)
+    public function retournerProduits($pNoProduit)
     {
         if ($pNoProduit === FALSE)
         {
@@ -17,7 +17,7 @@ class ModeleProduit extends CI_Model
         }
         //on va chercher l'article dont l'id est $pNoProduit
         $requête = $this->db->get_where('produit', array('NOPRODUIT' => $pNoProduit));
-        return $requête->row_array();
+        return  $requête->row_array();
 
     }// RetournerProduits
 
