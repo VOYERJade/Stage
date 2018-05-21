@@ -8,7 +8,7 @@ class ModeleProduit extends CI_Model
         /*chargement database.php (dans config), obligatoirement dans le constructeur*/
     }
 
-    public function retournerProduits($pNoProduit)
+    public function retournerProduits($pNoProduit = FALSE)
     {
         if ($pNoProduit === FALSE)
         {

@@ -1,5 +1,6 @@
-<?php
 
+
+<?php
 echo '<h2>'.$unProduit['LIBELLE'].'</h2>';
 echo $unProduit['DETAIL'];
 echo '<p>'.img($unProduit['NOMIMAGE']).'<p>'; // Affiche directement l'image

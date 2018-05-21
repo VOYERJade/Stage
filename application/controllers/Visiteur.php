@@ -22,6 +22,15 @@ class Visiteur extends CI_Controller
     $this->load->view('templates/PiedDePage');
   }//listerLesProduits
 
+  Public function Catalogue()
+  {
+    $DonneesInjectees['TitreDeLaPage'] = 'Catalogue';
+
+    $this->load->view('templates/Entete');
+    $this->load->view('visiteur/Catalogue', $DonneesInjectees);
+    $this->load->view('templates/PiedDePage');
+  }
+
   Public function voirUnProduit($pNoProduit = NULL)
   {
     $DonneesInjectees['UnProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
@@ -31,9 +40,8 @@ class Visiteur extends CI_Controller
         show_404();
       }
     
-    var_dump($DonneesInjectees);
     $DonneesInjectees['TitreDeLaPage'] = $DonneesInjectees['UnProduit']['LIBELLE'];
-    var_dump($DonneesInjectees);
+    
     $this->load->view('templates/Entete');
     $this->load->view('visiteur/voirUnProduit', $DonneesInjectees);
     $this->load->view('templates/PiedDePage');
@@ -90,7 +98,7 @@ class Visiteur extends CI_Controller
       else 
       {
         $Utilisateur = array(
-          'Nom' => $this->input->post('txtEmail'),
+          'Email' => $this->input->post('txtEmail'),
           'MotDePasse' => $this->input->post('txtMotDePasse'),
         );
 
@@ -98,8 +106,8 @@ class Visiteur extends CI_Controller
         if (!($UtilisateurRetourne == null))
         {
           $this->load->library('session');
-          $this->session->identifiant = $UtilisateurRetourne->cIdentifiant;
-          $this->session->statut = $UtilisateurRetourne->cStatut;
+          $this->session->Identifiant = $UtilisateurRetourne->Email;
+          $this->session->Profil = $UtilisateurRetourne->Profil;
 
           $DonneesInjectees['Email'] = $Utilisateur['Nom'];
           $this->load->view('templates/Entete');

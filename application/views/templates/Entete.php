@@ -32,7 +32,7 @@
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
           <li class="active"><a href="<?php echo site_url('visiteur/PageAccueil') ?>">Home</a></li>
-          <li><a href="<?php echo site_url('visiteur/voirUnProduit') ?>">Catalogue</a></li>
+          <li><a href="<?php echo site_url('visiteur/listerLesProduits') ?>">Catalogue</a></li>
           <li><a href="<?php echo site_url('visiteur/Panier') ?>">Panier</a></li>
           <li><a href="<?php echo site_url('visiteur/Compte') ?>">Compte</a></li>
           <li><a href="<?php echo site_url('visiteur/seDeConnecter') ?>">Se déconnecter</a></li>
@@ -77,7 +77,7 @@
         <ul class="nav navbar-nav">
           
           <li class="active"><a href="<?php echo site_url('visiteur/PageAccueil') ?>">Home</a></li>
-          <li><a href="<?php echo site_url('visiteur/voirUnProduit') ?>">Catalogue</a></li>
+          <li><a href="<?php echo site_url('visiteur/catalogue') ?>">Catalogue</a></li>
           <li><a href="<?php echo site_url('visiteur/Panier') ?>">Panier</a></li>
           <li><a href="<?php echo site_url('visiteur/insertionClient') ?>">S'inscire</a></li>
           <li><a href="<?php echo site_url('visiteur/seConnecter') ?>">Se Connecter</a></li>
