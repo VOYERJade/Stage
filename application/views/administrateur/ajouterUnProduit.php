@@ -1,5 +1,5 @@
 <html>
-
+<div align = "center">
 <h2><?php echo $TitreDeLaPage ?></h2>
 
 <?php echo validation_errors();
@@ -37,5 +37,5 @@ echo form_submit('boutonAjouter', 'Ajouter un produit').'<BR>';
 echo form_close();
 
 ?>
-
+</div>
 </html>

@@ -7,10 +7,10 @@ $lesProduits : variable récupérée depuis le contrôleur (en 'mode tableau ass
 <div class="container-fluid text-center"> 
 <div class="row content">
 <div class="col-sm-2 sidenav">
-<p><a href="<?php echo site_url('visiteur/listerLesProduits') ?>">Lister tous les produits</a></p>
-<p><a href="#">Livres</a></p>
-<p><a href="#">Figurines</a></p>
-<p><a href="#">Posters</a></p>
+<h4><p><a href="<?php echo site_url('visiteur/listerLesProduits') ?>">Lister tous les produits</a></p></h4>
+<h4><p><a href="#">Livres</a></p></h4>
+<h4><p><a href="#">Figurines</a></p></h4>
+<h4><p><a href="#">Posters</a></p></h4>
 </div>
 
 <div align = "center" class="col-sm-8 sidenav">

@@ -1,6 +1,7 @@
 <div align = "center"><h2><?php echo $TitreDeLaPage ?></h2></div>
 
 <div align = "center">
+    
 <?php
 echo validation_errors(); // mise en place de la validation
 /* set_value : en cas de non validation les données déjà

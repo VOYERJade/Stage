@@ -13,7 +13,6 @@
 <body>
 
     <?php if (!is_null($this->session->identifiant)) : ?>
-    <?php echo 'Utilisateur connecté : <B>'.$this->session->$Nom.'</B>&nbsp;&nbsp;';?>
     <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -23,20 +22,22 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span> 
         </button>
+        <a class="navbar-brand" href="#">Neko</a>
 <!--<a class="navbar-brand" href="#">Logo</a>-->
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
+        <li>
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li><a href="<?php echo site_url('visiteur/listerLesProduits') ?>">Catalogue</a></li>
-            <li><a href="<?php echo site_url('visiteur/Panier') ?>">Panier</a></li>
-            <li><a href="<?php echo site_url('visiteur/Compte') ?>">Compte</a></li>
+            <li><a href="<?php echo site_url('visiteur/Catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
+            <li><a href="<?php echo site_url('visiteur/Panier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
+            <li><a href="<?php echo site_url('visiteur/Compte') ?>"><span class="glyphicon glyphicon-user"></span> Compte</a></li>
             <?php if ($this->session->profil=='1') : ?>
-            <a href="<?php echo site_url('administrateur/ajouterUnProduit') ?>">Ajouter un Produit</a>&nbsp;&nbsp;
+            <li><a href="<?php echo site_url('administrateur/ajouterUnProduit') ?>">Ajouter un Produit</a></li>
             <?php endif; ?>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="<?php echo site_url('visiteur/seDeConnecter') ?>"><span class="glyphicon glyphicon-log-in"></span> Se Déconnecter</a></li>
+            <li><a href="<?php echo site_url('visiteur/seDeConnecter') ?>"><span class="glyphicon glyphicon-log-out"></span> Se Déconnecter</a></li>
         </ul>
     </div>
     </div>
@@ -52,20 +53,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span> 
         </button>
+        
+        <a class="navbar-brand" href="#">Neko</a>
+        
 <!-- VOIR POUR FAIRE L'AFFICHAGE DE LA PHOTO DU LOGO DANS LA BARRE DE NAVIGATION !!!! -->
 <!--<img('images/Logo_Neko.jpg')/>;-->
         </div>
     <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li><a href="<?php echo site_url('visiteur/catalogue') ?>">Catalogue</a></li>
-            <li><a href="<?php echo site_url('visiteur/Panier') ?>">Panier</a></li>
-            <li><a href="<?php echo site_url('visiteur/insertionClient') ?>">S'inscire</a></li>
-            <?php if ($this->session->statut==1) : ?>
-            <a href="<?php echo site_url('administrateur/ajouterUnProduit') ?>">Ajouter un Produit</a>&nbsp;&nbsp;
-            <?php endif; ?>
+            <li><a href="<?php echo site_url('visiteur/catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
+            <li><a href="<?php echo site_url('visiteur/Panier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="<?php echo site_url('visiteur/insertionClient') ?>">S'inscire</a></li>
             <li><a href="<?php echo site_url('visiteur/seConnecter') ?>"><span class="glyphicon glyphicon-log-in"></span> Se Connecter</a></li>
         </ul>
     </div>

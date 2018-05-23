@@ -1,10 +1,26 @@
+<div class="col-sm-12 text-left">
+
+<div align = "center">
 <?php
-foreach ($lesProduits as $unProduit):{
 echo '<h2>'.($unProduit['LIBELLE']).'</h2>';
-echo $unProduit['DETAIL'];
+?>
+</div>
+
+<div class="col-sm-4 text-left">
+<?php
 echo '<p>'.img($unProduit['NOMIMAGE']).'<p>'; // Affiche directement l'image
 // Nota Bene : img_url($unProduit['cNomFichierImage']) aurait retourne l'url de l'image (cf. assets)
-echo '<p>'.anchor('visiteur/listerLesProduits','Retour à la liste des articles').'</p>';
-//anchor permet une redirection vers une page plus rapidement 
-}endforeach
 ?>
+</div>
+</div>
+
+<div class="row content">
+<div class="col-sm-4 text-left">
+<?php
+echo '<h2> Résumé </h2>';
+echo $unProduit['DETAIL'];
+echo '<p><h3>'.anchor('visiteur/listerLesProduits','Retour à la liste des articles').'</h3></p>';
+//anchor permet une redirection vers une page plus rapidement 
+?>
+</div>
+</div>
