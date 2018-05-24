@@ -142,11 +142,12 @@ class Visiteur extends CI_Controller
 
     Public function seDeConnecter()
     {
-        $DonneesInjectees['TitreDeLaPage'] = 'Catalogue';
-
+        
+        $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
+        
         $this->session->sess_destroy();
         $this->load->view('templates/Entete');
-        $this->load->view('visiteur/Catalogue', $DonneesInjectees);
+        $this->load->view('visiteur/PageAccueil', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
 
     } // fin seDeConnecter

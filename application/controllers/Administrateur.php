@@ -55,4 +55,6 @@ $this->load->view('templates/PiedDePage');
 }
 } // ajouterUnArticle
 
+
+
 } //Class
