@@ -1,3 +1,5 @@
+
+
 .navbar {
   margin-bottom: 0;
   border-radius: 0;
@@ -32,4 +34,9 @@ div {
 img {
   height: 50px;
   width: 50px;
+}
+
+td{
+	width : 50px;
+	height : 50px;
 }
