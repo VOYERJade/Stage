@@ -10,6 +10,7 @@ class Visiteur extends CI_Controller
         $this->load->library("pagination");
         $this->load->model('ModeleProduit'); // chargement modèle, obligatoire
         $this->load->model('ModeleUtilisateur');
+        $this->load->library('cart');
     } // __construct
 
     Public function listerLesProduits()
@@ -30,38 +31,89 @@ class Visiteur extends CI_Controller
         $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduits();
         $this->load->view('visiteur/Catalogue', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
-    }
+    } // catalogue
 
-    Public function PageAccueil()
+    Public function PageAccueil($pNoProduit = NULL)
     {
         $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
-
+        $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduits();
+        $DonneesInjectees['unProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/PageAccueil', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
     }
 
-    Public function Panier()
+    Public function ajouterUnProduit($NoProduit = NULL, $libelle = NULL, $Prix = NULL)
     {
         $DonneesInjectees['TitreDeLaPage'] = 'Panier';
+        $this->load->helper('form');
+
+        $nom = $this->ModeleProduit->retournerNom($NoProduit);
+
+        $data = array(
+            'id'      => $NoProduit,
+            'qty'     => 1,
+            'name'    => implode($nom),
+            'price'   => $Prix,
+            
+        );
+        //var_dump($data);
+        $this->cart->insert($data);
+
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/Panier', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+    } //ajouter un produit dans le panier
+
+    public function modifierUnProduit($NoProduit = NULL)
+    {
+        $DonneesInjectees['TitreDeLaPage'] = 'Panier';
+        $this->load->helper('form');
+
+        $this->ModeleProduit->ModifierProduit();
+
+        $data = array(
+            'rowid'      => $NoProduit,
+            'qty'     => $qty,
+        );
+        $this->cart->update($data);
+
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/Panier', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+
+    }
+
+    public function SupprimerProduit($NoProduit)
+    {
+        $DonneesInjectees['TitreDeLaPage'] = 'Panier';
+        $this->load->helper('form');
+
+        $numero = $this->ModeleProduit->retournerNumero($NoProduit);
+
+        $data = array(
+            'id' => $numero,
+        );
+        $this->cart->destroy($data);
 
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/Panier', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
     }
 
+
     Public function voirUnProduit($pNoProduit = NULL)
     {
         $DonneesInjectees['unProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
-
+        
         if (empty($DonneesInjectees['unProduit']))
         {
             show_404();
         }
-    $DonneesInjectees['TitreDeLaPage'] = $DonneesInjectees['unProduit']['LIBELLE'];
-    $this->load->view('templates/Entete');
-    $this->load->view('visiteur/voirUnProduit', $DonneesInjectees);
-    $this->load->view('templates/PiedDePage');
+        $DonneesInjectees['TitreDeLaPage'] = $DonneesInjectees['unProduit']['LIBELLE'];
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/voirUnProduit', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
 
     }//Voir un produit
 
@@ -70,30 +122,31 @@ class Visiteur extends CI_Controller
         $this->load->helper('form');
         $DonneesInjectees['TitreDeLaPage'] = 'Inscription';
         if ($this->input->post('boutonAjouter')) //on test si le formulaire a été posté
-    {
-    $DonneesAInserer = array(
-    'Nom' =>$this->input->post('txtNom'),
-    'Prenom' =>$this->input->post('txtPrenom'),
-    'Adresse' =>$this->input->post('txtAdresse'),
-    'Ville' =>$this->input->post('txtVille'),
-    'CodePostal' =>$this->input->post('txtCodePostal'),
-    'Identifiant' =>$this->input->post('txtIdentifiant'),
-    'MotDePasse' =>$this->input->post('txtMDP')
-    );
-    $this->ModeleUtilisateur->insererUnClient($DonneesAInserer); //appel du modele
-    $this->load->helper('url'); // helper chargé pour l'utilisation de site_url (dans la vue)
-    $this->load->view('Administrateur/insertionReussie');
-    }
-    else 
-    {
-// Si le formulaire non posté = bouton 'submit' à NULL : on est jamais passé dans le formulaire 
-// -> on envoie le formulaire !!!
-    $this->load->view('templates/Entete');
-    $this->load->view('visiteur/Frm_Inscription', $DonneesInjectees);
-    $this->load->view('templates/PiedDePage');
-    }
+        {
+            $DonneesAInserer = array
+                (
+                'Nom' =>$this->input->post('txtNom'),
+                'Prenom' =>$this->input->post('txtPrenom'),
+                'Adresse' =>$this->input->post('txtAdresse'),
+                'Ville' =>$this->input->post('txtVille'),
+                'CodePostal' =>$this->input->post('txtCodePostal'),
+                'Identifiant' =>$this->input->post('txtIdentifiant'),
+                'MotDePasse' =>$this->input->post('txtMDP')
+                );
+            $this->ModeleUtilisateur->insererUnClient($DonneesAInserer); //appel du modele
+            $this->load->helper('url'); // helper chargé pour l'utilisation de site_url (dans la vue)
+            $this->load->view('Administrateur/insertionReussie');
+        }
+        else 
+        {
+            // Si le formulaire non posté = bouton 'submit' à NULL : on est jamais passé dans le formulaire 
+            // -> on envoie le formulaire !!!
+            $this->load->view('templates/Entete');
+            $this->load->view('visiteur/Frm_Inscription', $DonneesInjectees);
+            $this->load->view('templates/PiedDePage');
+        }
 
-}
+    }
 
     Public function seConnecter()
     {
@@ -120,35 +173,35 @@ class Visiteur extends CI_Controller
 
             $UtilisateurRetourne = $this->ModeleUtilisateur->retournerUtilisateur($Utilisateur);
             if (!($UtilisateurRetourne == null))
-        {
-            $this->load->library('session');
-            $this->session->identifiant = $UtilisateurRetourne->EMAIL;
-            $this->session->Profil = $UtilisateurRetourne->PROFIL;
+            {
+                $this->load->library('session');
+                $this->session->identifiant = $UtilisateurRetourne->EMAIL;
+                $this->session->Profil = $UtilisateurRetourne->PROFIL;
 
-            $this->session->Nom = $UtilisateurRetourne->NOM;
-            $this->session->Prenom = $UtilisateurRetourne->PRENOM;
-            $this->load->view('templates/Entete');
-            $this->load->view('visiteur/connexionReussie', $DonneesInjectees);
-            $this->load->view('templates/PiedDePage');
-        }
-        else 
-        {
-            $this->load->view('templates/Entete');
-            $this->load->view('visiteur/seConnecter', $DonneesInjectees);
-            $this->load->view('templates/PiedDePage');
-        }
+                $this->session->Nom = $UtilisateurRetourne->NOM;
+                $this->session->Prenom = $UtilisateurRetourne->PRENOM;
+                $this->load->view('templates/Entete');
+                $this->load->view('visiteur/connexionReussie', $DonneesInjectees);
+                $this->load->view('templates/PiedDePage');
+            }
+            else 
+            {
+                $this->load->view('templates/Entete');
+                $this->load->view('visiteur/seConnecter', $DonneesInjectees);
+                $this->load->view('templates/PiedDePage');
+            }
         }
     } // fin seConnecter
 
     Public function seDeConnecter()
     {
-        
-        $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
-        
         $this->session->sess_destroy();
+        $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/PageAccueil', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
 
     } // fin seDeConnecter
+
+    
 }

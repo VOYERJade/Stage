@@ -8,10 +8,10 @@ echo validation_errors(); // mise en place de la validation
 saisies sont réinjectées dans le formulaire */
 echo form_open('visiteur/seConnecter');
 
-echo form_label('Identifiant','txtEmail'); // creation d'un label devant la zone de saisie
+echo form_label('Email : ','txtEmail'); // creation d'un label devant la zone de saisie
 echo form_input('txtEmail', set_value('txtEmail'));
 
-echo form_label('Mot de passe','txtMotDePasse');
+echo form_label('Mot de passe : ','txtMotDePasse');
 echo form_password('txtMotDePasse', set_value('txtMotDePasse'));
 
 echo form_submit('submit', 'Se connecter');

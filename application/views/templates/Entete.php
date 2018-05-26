@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="Style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -30,8 +30,8 @@
         <li>
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
             <li><a href="<?php echo site_url('visiteur/Catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
-            <li><a href="<?php echo site_url('visiteur/Panier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
-            <li><a href="<?php echo site_url('visiteur/Compte') ?>"><span class="glyphicon glyphicon-user"></span> Compte</a></li>
+            <li><a href="<?php echo site_url('visiteur/ajouterUnProduit') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
+            <li><a href="<?php echo site_url('client/Compte') ?>"><span class="glyphicon glyphicon-user"></span> Compte</a></li>
             <?php if ($this->session->identifiant=='1') : ?>
             <li><a href="<?php echo site_url('administrateur/ajouterUnProduit') ?>">Ajouter un Produit</a></li>;
             <?php endif; ?>
@@ -61,7 +61,7 @@
         <ul class="nav navbar-nav">
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
             <li><a href="<?php echo site_url('visiteur/catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
-            <li><a href="<?php echo site_url('visiteur/Panier') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
+            <li><a href="<?php echo site_url('visiteur/ajouterUnProduit') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url('visiteur/insertionClient') ?>">S'inscire</a></li>

@@ -26,7 +26,7 @@ echo form_label("Email :", 'lblEmail');
 echo form_input('txtEmail','',array('pattern'=>'[a-zA-Z0-9,.@]*', 'title'=>'Un nom de fichier doit commencer par une lettre', 'required'=>'required')).'<BR>';
 
 echo form_label("Mot de Passe :", 'lblMDP');
-echo form_input('txtMDP','',array('pattern'=>'[a-zA-Z0-9/-]*', 'title'=>'Un nom de fichier doit commencer par une lettre', 'required'=>'required')).'<BR>';
+echo form_password('txtMDP','',array('pattern'=>'[a-zA-Z0-9/-]*', 'title'=>'Un nom de fichier doit commencer par une lettre', 'required'=>'required')).'<BR>';
 
 echo form_submit('boutonAjouter', 'Inscription').'<BR>';
 echo form_close();
