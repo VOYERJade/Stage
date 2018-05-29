@@ -23,3 +23,14 @@
     </table>
 </div>
 </div>
+    <div align ="center">
+        <div class="container-fluid text-center"> 
+            <div class="row content">
+              <div class="col-sm-2 sidenav">
+              <p><a href="<?php echo site_url('Client/ModifierMDP') ?>">Modifier Mot De Passe</a></p>
+              <p><a href="<?php echo site_url('Client/ModifierEmail') ?>">Modifier Adresse Email</a></p>
+              <p><a href="<?php echo site_url('Client/ModifierMDP') ?>">Modifier Adresse de Livraison</a></p>
+            </div>
+        </div>
+    </div>
+</div>

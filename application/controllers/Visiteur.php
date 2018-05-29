@@ -36,8 +36,6 @@ class Visiteur extends CI_Controller
     Public function PageAccueil($pNoProduit = NULL)
     {
         $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
-        $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduits();
-        $DonneesInjectees['unProduit'] = $this->ModeleProduit->retournerProduits($pNoProduit);
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/PageAccueil', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
@@ -57,7 +55,6 @@ class Visiteur extends CI_Controller
             'price'   => $Prix,
             
         );
-        //var_dump($data);
         $this->cart->insert($data);
 
         $this->load->view('templates/Entete');
@@ -68,39 +65,37 @@ class Visiteur extends CI_Controller
     public function modifierUnProduit($NoProduit = NULL)
     {
         $DonneesInjectees['TitreDeLaPage'] = 'Panier';
-        $this->load->helper('form');
+        if($this->input->post('btnModifier'))
+        {
+            $total=$this->cart->total_items();
 
-        $this->ModeleProduit->ModifierProduit();
-
-        $data = array(
-            'rowid'      => $NoProduit,
-            'qty'     => $qty,
-        );
-        $this->cart->update($data);
-
-        $this->load->view('templates/Entete');
-        $this->load->view('visiteur/Panier', $DonneesInjectees);
-        $this->load->view('templates/PiedDePage');
-
+            for($i=0;$i < $total;$i++)
+            {
+                //valeur null a voir 
+                $Data=array(
+                    'rowid' => $this->input->post($i.'[rowid]'),
+                    'qty'   => $this->input->post($i.'[qty]'),
+                );
+                //var_dump($Data);
+                $this->cart->update($Data);
+            }
+            $this->load->view('templates/Entete');
+            $this->load->view('visiteur/Panier', $DonneesInjectees);
+            $this->load->view('templates/PiedDePage');
+        }
     }
 
-    public function SupprimerProduit($NoProduit)
+    Public function SupprimerProduit($rowid)
     {
         $DonneesInjectees['TitreDeLaPage'] = 'Panier';
         $this->load->helper('form');
 
-        $numero = $this->ModeleProduit->retournerNumero($NoProduit);
-
-        $data = array(
-            'id' => $numero,
-        );
-        $this->cart->destroy($data);
+        $this->cart->remove($rowid);
 
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/Panier', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
     }
-
 
     Public function voirUnProduit($pNoProduit = NULL)
     {
@@ -130,7 +125,7 @@ class Visiteur extends CI_Controller
                 'Adresse' =>$this->input->post('txtAdresse'),
                 'Ville' =>$this->input->post('txtVille'),
                 'CodePostal' =>$this->input->post('txtCodePostal'),
-                'Identifiant' =>$this->input->post('txtIdentifiant'),
+                'Email' =>$this->input->post('txtEmail'),
                 'MotDePasse' =>$this->input->post('txtMDP')
                 );
             $this->ModeleUtilisateur->insererUnClient($DonneesAInserer); //appel du modele
@@ -170,14 +165,13 @@ class Visiteur extends CI_Controller
             'Email' => $this->input->post('txtEmail'),
             'MotDePasse' => $this->input->post('txtMotDePasse'),
             );
-
             $UtilisateurRetourne = $this->ModeleUtilisateur->retournerUtilisateur($Utilisateur);
             if (!($UtilisateurRetourne == null))
             {
                 $this->load->library('session');
                 $this->session->identifiant = $UtilisateurRetourne->EMAIL;
                 $this->session->Profil = $UtilisateurRetourne->PROFIL;
-
+                $this->session->noClient = $UtilisateurRetourne->NOCLIENT;
                 $this->session->Nom = $UtilisateurRetourne->NOM;
                 $this->session->Prenom = $UtilisateurRetourne->PRENOM;
                 $this->load->view('templates/Entete');
@@ -195,13 +189,101 @@ class Visiteur extends CI_Controller
 
     Public function seDeConnecter()
     {
-        $this->session->sess_destroy();
+        session_destroy();
         $DonneesInjectees['TitreDeLaPage'] = 'Bienvenue sur Neko !';
+        redirect('Visiteur/PageAccueil');
         $this->load->view('templates/Entete');
         $this->load->view('visiteur/PageAccueil', $DonneesInjectees);
         $this->load->view('templates/PiedDePage');
 
     } // fin seDeConnecter
 
+    public function Recherche()
+    {
+        if($this->input->post('btnRecherche'))
+        {
+            $recherche =$this->input->post('txtlibelle');
+
+            redirect('visiteur/RechercheProduit/'.$recherche);
+        }
+    } // fin Recherche
+
+    public function RechercheProduit($Recherche=NULL)
+    {
+        if(!($Recherche==NULL)&& !($Recherche==""))
+        {
+            $config = array();
+            $config["Base_url"] = site_url('visiteur/RechercheProduit/'.$Recherche);
+            $config["total_rows"] = $this->ModeleProduit->nombreProduit($Recherche);
+            $config["per_page"] = 5;
+            $config["uri_segment"] = 4;
+
+            $config['fist_link'] = 'Premier';
+            $config['last_link'] = 'Dernier';
+            $config['next_link'] = 'Suivant';
+            $config['prev_link'] = 'Précédent';
+
+            $this->pagination->initialize($config);
+            $noPage = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+            $DonneesInjectees['lesProduits'] = $this->ModeleProduit->ProduitRecherche($Recherche,$config['per_page'], $noPage);
+
+            $DonneesInjectees['TitreDeLaPage'] = 'Résultat de la Recherche';
+            $DonneesInjectees['lienPagination'] = $this->pagination->create_links();
+
+            $this->load->view('templates/Entete');
+            $this->load->view('visiteur/ProduitRecherche', $DonneesInjectees);
+            $this->load->view('templates/PiedDePage');
+        }
+    } // fin Recherche Produit
+
+    public function listerLesProduitsAvecPagination()
+    {
+        $config = array();
+        $config["base_url"] = site_url('visiteur/listerLesProduitsAvecPagination');
+        $config["total_rows"] = $this->ModeleProduit->nombreDeProduits();
+        $config["per_page"] = 3;
+        $config["uri_segment"] = 3;
+
+        $config['first_link'] = 'Premier';
+        $config['last_link'] = 'Dernier';
+        $config['next_link'] = 'Suivant';
+        $config['prev_link'] = 'Précédent';
+
+        $this->pagination->initialize($config);
+
+        $noPage = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $DonneesInjectees['TitreDeLaPage'] = 'Tous les produits';
+        $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduitsLimite($config["per_page"], $noPage);
+        $DonneesInjectees["liensPagination"] = $this->pagination->create_links();
+
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/listerLesProduitsAvecPagination', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+    }
+
+    public function CatalogueAvecPagination()
+    {
+        $config = array();
+        $config["base_url"] = site_url('visiteur/CatalogueAvecPagination');
+        $config["total_rows"] = $this->ModeleProduit->nombreDeProduits();
+        $config["per_page"] = 3;
+        $config["uri_segment"] = 3;
+
+        $config['first_link'] = 'Premier';
+        $config['last_link'] = 'Dernier';
+        $config['next_link'] = 'Suivant';
+        $config['prev_link'] = 'Précédent';
+
+        $this->pagination->initialize($config);
+
+        $noPage = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $DonneesInjectees['TitreDeLaPage'] = 'Tous les produits';
+        $DonneesInjectees['lesProduits'] = $this->ModeleProduit->retournerProduitsLimite($config["per_page"], $noPage);
+        $DonneesInjectees["liensPagination"] = $this->pagination->create_links();
+
+        $this->load->view('templates/Entete');
+        $this->load->view('visiteur/CatalogueAvecPagination', $DonneesInjectees);
+        $this->load->view('templates/PiedDePage');
+    }
     
 }

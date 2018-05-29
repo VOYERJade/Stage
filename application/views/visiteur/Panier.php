@@ -2,7 +2,7 @@
 
 <div align = "center"><h2><?php echo $TitreDeLaPage ?></h2></div>
 
-        <?php echo form_open('path/to/controller/update/method'); ?>
+        <?php echo form_open('visiteur/ModifierUnProduit'); ?>
 
         <table cellpadding="6" cellspacing="1" style="width:70%" border="1">
 
@@ -21,12 +21,13 @@
 
                 <tr>
                         <td><?php echo form_input(array('name' => $i.'[qty]', 'value' => $unProduit['qty'])); ?></td>
-                        <td>
-                                <?php echo $unProduit['name']; ?>
-                        </td>
+                        <td><?php echo $unProduit['name']; ?></td>
                         <td><?php echo $this->cart->format_number($unProduit['price']); ?></td>
                         <td><?php echo $this->cart->format_number($unProduit['subtotal']); ?>€</td>
+                        <?php echo form_Close();?>
+                        <?php echo form_Open();?>
                         <td><?php echo anchor('visiteur/SupprimerProduit/'.$unProduit['rowid'], 'Supprimer');?></td>;
+                        <?php echo form_Close();?>
                 </tr>
 
                 <?php $i++; ?>
@@ -42,10 +43,10 @@
 
         </table>
 
-        <p><?php echo form_submit('visiteur/modifierUnProduit', 'Modifier le Panier');?>
+        <p><?php echo form_submit('btnModifier', 'Modifier');?>
 
         </br>
 
         <?php
-          echo '<h4>'.anchor('visiteur/Catalogue','Retour au Catalogue').'</h4>';
+          echo '<h4>'.anchor('visiteur/CatalogueAvecPagination','Retour au Catalogue').'</h4>';
         ?>

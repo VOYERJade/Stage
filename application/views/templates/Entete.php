@@ -29,12 +29,13 @@
         <ul class="nav navbar-nav">
         <li>
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li><a href="<?php echo site_url('visiteur/Catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
+            <li><a href="<?php echo site_url('visiteur/CatalogueAvecPagination') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
             <li><a href="<?php echo site_url('visiteur/ajouterUnProduit') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
             <li><a href="<?php echo site_url('client/Compte') ?>"><span class="glyphicon glyphicon-user"></span> Compte</a></li>
-            <?php if ($this->session->identifiant=='1') : ?>
+            <?php if ($this->session->Profil=='1') : ?>
             <li><a href="<?php echo site_url('administrateur/ajouterUnProduit') ?>">Ajouter un Produit</a></li>;
             <?php endif; ?>
+            
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url('visiteur/seDeConnecter') ?>"><span class="glyphicon glyphicon-log-out"></span> Se Déconnecter</a></li>
@@ -60,8 +61,15 @@
     <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
             <li><a href="<?php echo site_url('visiteur/PageAccueil') ?>"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-            <li><a href="<?php echo site_url('visiteur/catalogue') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
+            <li><a href="<?php echo site_url('visiteur/CatalogueAvecPagination') ?>"><span class="glyphicon glyphicon-book"></span> Catalogue</a></li>
             <li><a href="<?php echo site_url('visiteur/ajouterUnProduit') ?>"><span class="glyphicon glyphicon-shopping-cart"></span> Panier</a></li>
+            
+            <?php
+            echo form_open('visiteur/Recherche');
+            echo form_input(array('name' => 'txtlibelle', 'value'=>'', 'pattern'=>'^[a-zA-Z ]*','title'=>'un nom doit commencer par une lettre', 'required'=>'required'));
+            echo form_submit('btnRecherche', 'Recherche');
+            echo form_close();
+            ?>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo site_url('visiteur/insertionClient') ?>">S'inscire</a></li>

@@ -40,22 +40,54 @@ class ModeleProduit extends CI_Model
         return $requete->row_array();
     }
 
-    function ModifierProduit()
+    Public function nombreProduit($nomProduit = FALSE)
     {
-
-        $unProduit = $this->input->post('rowid');
-        $qty = $this->input->post('qty');
-     
-        for($i=0;$i < $total;$i++)
+        if($nomProduit===false)
         {
-            $data = array(
-               'rowid' => $unProduit[$i],
-               'qty'   => $qty[$i]
-            );
-             
-            $this->cart->update($data);
+            return $this->db->count_all('produit');
         }
-     
+        $this->db->from('produit');
+        $this->db->like('LIBELLE', $nomProduit);
+        $requete = $this->db->count_all_results();
+        return $requete;
+    }
+
+    public function ProduitRecherche($nomProduit, $nbLignesRetournees, $PremiereLigneRetournee)
+    {
+        $this->db->limit($nbLignesRetournees, $PremiereLigneRetournee);
+        $this->db->select('*');
+        $this->db->from('produit');
+        $this->db->like('LIBELLE', $nomProduit);
+        $query = $this->db->get();
+        if($query->num_rows()>0)
+        {
+            foreach ($query->result_array() as $ligne) {
+                $jeuEnr[] = $ligne;
+            }
+            return $jeuEnr;
+        }
+        return FALSE;
+    }
+
+    public function retournerProduitsLimite($nombreDeLigneARetourner, $noPremiereLigneARetourner)
+    {
+        $this->db->limit($nombreDeLigneARetourner, $noPremiereLigneARetourner);
+        $requete = $this->db->get("produit");
+
+        if ($requete->num_rows() > 0)
+        {
+            foreach ($requete->result() as $ligne)
+            {
+               $jeuEnr[] = $ligne;
+            }
+            return $jeuEnr;
+        }
+        return FALSE;
+    }
+
+    Public function nombreDeProduits()
+    {
+        return $this->db->count_all('produit');
     }
 
 } //Class

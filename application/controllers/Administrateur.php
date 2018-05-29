@@ -15,7 +15,7 @@ class Administrateur extends CI_Controller {
         if ($this->session->statut==0) // 0 : statut visiteur
         {
             $this->load->helper('url'); // pour utiliser redirect
-            //redirect('/visiteur/seConnecter'); // pas les droits : redirection vers connexion
+            redirect('/visiteur/seConnecter'); // pas les droits : redirection vers connexion
         }
     } // __construct
 
